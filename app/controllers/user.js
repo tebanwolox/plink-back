@@ -1,4 +1,3 @@
-const { validateUser } = require('../helpers/validations');
 const { createUser } = require('../services/user');
 const logger = require('../logger');
 const { hashingPassword } = require('../helpers/crypt');
@@ -6,8 +5,7 @@ const { hashingPassword } = require('../helpers/crypt');
 exports.createUser = (req, res, next) => {
   logger.info('Start user sign up');
   const user = req.body;
-  return validateUser(user)
-    .then(() => hashingPassword(user.password))
+  return hashingPassword(user.password)
     .then(hash => {
       user.password = hash;
       return createUser(user);
