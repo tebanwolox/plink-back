@@ -10,11 +10,36 @@ exports.signUpSchema = {
     }
   },
   lastName: {
-    isLength: {
-      options: { min: 2 },
-      errorMessage: 'lastName is invalid'
+    in: ['body'],
+    isEmpty: {
+      negated: true,
+      errorMessage: 'firstName is invalid'
     }
   },
+  userName: {
+    in: ['body'],
+    isEmpty: {
+      negated: true,
+      errorMessage: 'firstName is invalid'
+    }
+  },
+  password: {
+    in: ['body'],
+    matches: {
+      options: PASS_REG_EX,
+      errorMessage: 'The passwortd must have at least 8 chracthers, numbers and letters'
+    }
+  },
+  currency: {
+    in: ['body'],
+    custom: {
+      options: coin => validateCoin(coin),
+      errorMessage: 'The Coin is invalid'
+    }
+  }
+};
+
+exports.signInSchema = {
   userName: {
     isLength: {
       options: { min: 2 },
@@ -25,12 +50,6 @@ exports.signUpSchema = {
     matches: {
       options: PASS_REG_EX,
       errorMessage: 'The passwortd must have at least 8 chracthers, numbers and letters'
-    }
-  },
-  currency: {
-    custom: {
-      options: coin => validateCoin(coin),
-      errorMessage: 'The Coin is invalid'
     }
   }
 };
