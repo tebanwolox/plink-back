@@ -20,23 +20,23 @@ exports.createUser = (req, res, next) => {
     .catch(next);
 };
 
-exports.logging = (req, res, next) => {
-  logger.info('Start user sign in');
-  const log = req.body;
-  return authentication(log)
-    .then(user => comparePassword(log.password, user.password))
-    .then(isLog => {
-      if (isLog) {
-        res.send({
-          logging: {
-            token: getToken(),
-            message: 'Successful logging'
-          }
-        });
-        logger.info('Finish user sign in');
-      } else {
-        next(errors.badRequest('Invalid user name or password'));
-      }
-    })
-    .catch(next);
+exports.logging = async (req, res, next) => {
+  try {
+    logger.info('Start user sign in');
+    const credentials = req.body;
+    const user = await authentication(credentials);
+    const isLoggedOn = await comparePassword(credentials.password, user.password);
+    if (isLoggedOn) {
+      logger.info('Finish user sign in');
+      return res.send({
+        logging: {
+          token: getToken(user),
+          message: 'Successful logging'
+        }
+      });
+    }
+    return next(errors.badRequest('Invalid user name or password'));
+  } catch (err) {
+    return next(err);
+  }
 };
