@@ -23,10 +23,10 @@ exports.createUser = (req, res, next) => {
 exports.logging = async (req, res, next) => {
   try {
     logger.info('Start user sign in');
-    const log = req.body;
-    const user = await authentication(log);
-    const isLog = await comparePassword(log.password, user.password);
-    if (isLog) {
+    const credentials = req.body;
+    const user = await authentication(credentials);
+    const isLoggedOn = await comparePassword(credentials.password, user.password);
+    if (isLoggedOn) {
       logger.info('Finish user sign in');
       return res.send({
         logging: {
