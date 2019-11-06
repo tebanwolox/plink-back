@@ -13,14 +13,14 @@ exports.signUpSchema = {
     in: ['body'],
     isEmpty: {
       negated: true,
-      errorMessage: 'firstName is invalid'
+      errorMessage: 'lastName is invalid'
     }
   },
   userName: {
     in: ['body'],
     isEmpty: {
       negated: true,
-      errorMessage: 'firstName is invalid'
+      errorMessage: 'userName is invalid'
     }
   },
   password: {
