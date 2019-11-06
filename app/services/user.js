@@ -9,7 +9,10 @@ exports.createUser = user =>
   });
 
 exports.authentication = log =>
-  User.findOne({ where: { userName: log.userName } }).catch(err => {
+  User.findOne({
+    where: { userName: log.userName },
+    attributes: ['id', 'firstName', 'lastName', 'password']
+  }).catch(err => {
     logger.error(err.message);
     return Promise.reject(errors.databaseError('Error with data base'));
   });
