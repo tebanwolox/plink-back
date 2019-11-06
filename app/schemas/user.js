@@ -49,9 +49,9 @@ exports.signInSchema = {
   },
   password: {
     in: ['body'],
-    matches: {
-      options: PASS_REG_EX,
-      errorMessage: 'The passwortd must have at least 8 chracthers, numbers and letters'
+    isEmpty: {
+      negated: true,
+      errorMessage: 'userName is invalid'
     }
   }
 };

@@ -7,3 +7,9 @@ exports.createUser = user =>
     logger.error(err.message);
     return Promise.reject(errors.databaseError('Error with data base'));
   });
+
+exports.authentication = log =>
+  User.findOne({ where: { userName: log.userName } }).catch(err => {
+    logger.error(err.message);
+    return Promise.reject(errors.databaseError('Error with data base'));
+  });
