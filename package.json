@@ -21,6 +21,7 @@
     "start-dev": "nodemon --inspect server.js",
     "prestart-dev": "npm run lint",
     "migrations": "sequelize db:migrate",
+    "migrations-undo": "sequelize db:migrate:undo",
     "migrations-test": "NODE_ENV=testing sequelize db:migrate",
     "start": "node server.js"
   },
@@ -66,16 +67,18 @@
     }
   },
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
-    "jwt-simple": "^0.5.1",
-    "sequelize": "^5.10.1",
-    "factory-girl": "^5.0.4",
-    "pg": "^7.4.1",
-    "umzug": "^2.1.0",
+    "express-validator": "^6.2.0",
     "express-wolox-logger": "1.1.0",
-    "swagger-ui-express": "^4.0.7"
+    "factory-girl": "^5.0.4",
+    "jwt-simple": "^0.5.1",
+    "pg": "^7.4.1",
+    "sequelize": "^5.10.1",
+    "swagger-ui-express": "^4.0.7",
+    "umzug": "^2.1.0"
   },
   "devDependencies": {
     "babel": "6.23.0",
