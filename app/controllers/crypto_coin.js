@@ -9,8 +9,8 @@ exports.createCoin = (req, res, next) => {
   const currency = req.body.currency.toUpperCase();
   return verifiedCrypto(currency)
     .then(response => {
-      if (!response.success) return next(errors.badRequest('This is not a cryptocoin'));
-      return addCoin(currency, user.id);
+      if (response.success) return addCoin(currency, user.id);
+      return next(errors.badRequest('This is not a cryptocoin'));
     })
     .then(coin => res.status(201).send({ coin }))
     .catch(next);
