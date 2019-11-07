@@ -1,5 +1,6 @@
 const { addCoin, getCoinsByUser } = require('../services/crypto_coin');
 const { verifiedCrypto, convertCoins } = require('../services/breave_coin');
+const { cryptoList } = require('../serializers/coins');
 const errors = require('../errors');
 const logger = require('../logger');
 
@@ -24,9 +25,10 @@ exports.listCoins = (req, res, next) => {
   const { user } = req;
   return getCoinsByUser(user.id)
     .then(coins => convertCoins(coins, user.currency))
-    .then(response => {
-      console.log(response);
-      return res.send(response);
+    .then(coins => cryptoList(coins))
+    .then(coins => {
+      logger.info('Finish list coins');
+      return res.send({ coins });
     })
     .catch(next);
 };
