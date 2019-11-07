@@ -7,3 +7,10 @@ exports.addCoin = (currency, userId) =>
     logger.error(err.message);
     return Promise.reject(errors.databaseError('Error with data base'));
   });
+
+exports.getCoins = id => {
+  CryptoCoin.findAll({
+    where: { userId: id },
+    attributes: ['currency']
+  });
+};
