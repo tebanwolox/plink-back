@@ -7,9 +7,3 @@ exports.serializeCoins = coins =>
     };
     return coin;
   });
-
-exports.orderCoinsAsc = coins =>
-  coins.sort((coinPrev, coinNext) => (coinPrev.price < coinNext.price ? 1 : -1));
-
-exports.orderCoinsDes = coins =>
-  coins.sort((coinPrev, coinNext) => (coinPrev.price > coinNext.price ? 1 : -1));
