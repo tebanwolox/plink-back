@@ -1,6 +1,8 @@
-const { createUser } = require('../services/user');
+const { createUser, authentication } = require('../services/user');
 const logger = require('../logger');
-const { hashingPassword } = require('../helpers/crypt');
+const { hashingPassword, comparePassword } = require('../helpers/crypt');
+const { getToken } = require('../helpers/jwt');
+const errors = require('../errors');
 
 exports.createUser = (req, res, next) => {
   logger.info('Start user sign up');
@@ -16,4 +18,25 @@ exports.createUser = (req, res, next) => {
       return res.status(201).send({ user: createdUser.dataValues });
     })
     .catch(next);
+};
+
+exports.logging = async (req, res, next) => {
+  try {
+    logger.info('Start user sign in');
+    const credentials = req.body;
+    const user = await authentication(credentials);
+    const isLoggedOn = await comparePassword(credentials.password, user.password);
+    if (isLoggedOn) {
+      logger.info('Finish user sign in');
+      return res.send({
+        logging: {
+          token: getToken(user),
+          message: 'Successful logging'
+        }
+      });
+    }
+    return next(errors.badRequest('Invalid user name or password'));
+  } catch (err) {
+    return next(err);
+  }
 };

@@ -40,16 +40,18 @@ exports.signUpSchema = {
 };
 
 exports.signInSchema = {
+  in: ['body'],
   userName: {
-    isLength: {
-      options: { min: 2 },
+    isEmpty: {
+      negated: true,
       errorMessage: 'userName is invalid'
     }
   },
   password: {
-    matches: {
-      options: PASS_REG_EX,
-      errorMessage: 'The passwortd must have at least 8 chracthers, numbers and letters'
+    in: ['body'],
+    isEmpty: {
+      negated: true,
+      errorMessage: 'userName is invalid'
     }
   }
 };
