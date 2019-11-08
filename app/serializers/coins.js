@@ -1,4 +1,4 @@
-exports.cryptoList = coins =>
+exports.serializeCoins = coins =>
   coins.map(convertCoin => {
     const coin = {
       name: convertCoin.from_name,
@@ -7,3 +7,9 @@ exports.cryptoList = coins =>
     };
     return coin;
   });
+
+exports.orderCoinsAsc = coins =>
+  coins.sort((coinPrev, coinNext) => (coinPrev.price < coinNext.price ? 1 : -1));
+
+exports.orderCoinsDes = coins =>
+  coins.sort((coinPrev, coinNext) => (coinPrev.price > coinNext.price ? 1 : -1));

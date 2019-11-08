@@ -4,7 +4,7 @@ const { signUpSchema, signInSchema } = require('./schemas/user');
 const { createCoinSchema } = require('./schemas/crypto_coin');
 const { validateSchema, validateSchemaAuth } = require('./middlewares/validate_schema');
 const { validateAuth } = require('./middlewares/authentication');
-const { createCoin, listCoins } = require('./controllers/crypto_coin');
+const { createCoin, listCoins, topCoins } = require('./controllers/crypto_coin');
 
 exports.init = app => {
   app.get('/health', healthCheck);
@@ -12,4 +12,5 @@ exports.init = app => {
   app.post('/users/sessions', validateSchema(signInSchema), logging);
   app.post('/coins', validateSchemaAuth(createCoinSchema), createCoin);
   app.get('/coins/list', validateAuth, listCoins);
+  app.get('/coins/topList', validateAuth, topCoins);
 };
