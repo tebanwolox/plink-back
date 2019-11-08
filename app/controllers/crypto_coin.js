@@ -1,6 +1,7 @@
 const { addCoin, getCoinsByUser } = require('../services/crypto_coin');
 const { verifiedCrypto, convertCoins } = require('../services/breave_coin');
 const { serializeCoins, orderCoinsAsc } = require('../serializers/coins');
+const { topCoins } = require('../../config').common.coins;
 const errors = require('../errors');
 const logger = require('../logger');
 
@@ -35,13 +36,13 @@ exports.listCoins = (req, res, next) => {
 
 exports.topCoins = (req, res, next) => {
   logger.info('Start list coins');
-  const { user } = req;
+  const { user } = req.user;
   return getCoinsByUser(user.id)
     .then(coins => convertCoins(coins, user.currency))
     .then(coins => serializeCoins(coins))
     .then(coins => orderCoinsAsc(coins))
     .then(orderCrypto => {
-      const coins = orderCrypto.slice(0, 3);
+      const coins = orderCrypto.slice(0, topCoins);
       logger.info('Finish list coins');
       return res.send({ coins });
     })
