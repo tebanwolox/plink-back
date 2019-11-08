@@ -14,6 +14,12 @@ exports.topCoinsSchema = {
     isIn: {
       options: [['asc', 'desc']],
       errorMessage: 'Ord invalid'
+    },
+    optional: {
+      options: {
+        checkFalsy: true,
+        nullable: false
+      }
     }
   }
 };

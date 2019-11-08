@@ -54,7 +54,7 @@ const config = {
       braveApiKey: process.env.BREAVE_COIN_API_KEY
     },
     coins: {
-      topCoins: process.env.TOP_COINS
+      topNumber: process.env.TOP_COINS
     }
   }
 };

@@ -2,7 +2,11 @@ const { addCoin, getCoinsByUser } = require('../services/crypto_coin');
 const { verifiedCrypto, convertCoins } = require('../services/breave_coin');
 const { serializeCoins } = require('../serializers/coins');
 const { orderArrayDes, orderArraysAsc } = require('../helpers/array');
-const { topCoins } = require('../../config').common.coins;
+const {
+  common: {
+    coins: { topNumber }
+  }
+} = require('../../config');
 const errors = require('../errors');
 const logger = require('../logger');
 
@@ -40,15 +44,15 @@ exports.topCoins = (req, res, next) => {
   const { user } = req.user;
   return getCoinsByUser(user.id)
     .then(coins => convertCoins(coins, user.currency))
-    .then(coins => serializeCoins(coins))
-    .then(coins => orderArrayDes(coins, 'price'))
-    .then(orderCrypto => {
-      let coins = orderCrypto.slice(0, topCoins);
-      if (req.query.ord === 'asc') {
-        coins = orderArraysAsc(coins, 'price');
-      }
+    .then(convCoins => {
+      const serialCoins = serializeCoins(convCoins);
+      const orderCoins = orderArrayDes(serialCoins, 'price');
+      const topCoins = orderCoins.slice(0, topNumber);
+      return req.query.ord === 'asc' ? orderArraysAsc(topCoins, 'price') : topCoins;
+    })
+    .then(coins => {
       logger.info('Finish list coins');
-      return res.send({ coins, currency: user.currency });
+      res.send({ coins, currency: user.currency });
     })
     .catch(next);
 };
