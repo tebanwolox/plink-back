@@ -1,4 +1,4 @@
-const { createUser, authentication } = require('../services/user');
+const { createUser, getUser } = require('../services/user');
 const logger = require('../logger');
 const { hashingPassword, comparePassword } = require('../helpers/crypt');
 const { getToken } = require('../helpers/jwt');
@@ -24,10 +24,11 @@ exports.logging = async (req, res, next) => {
   try {
     logger.info('Start user sign in');
     const credentials = req.body;
-    const user = await authentication(credentials);
+    const user = await getUser(credentials);
     const isLoggedOn = await comparePassword(credentials.password, user.password);
     if (isLoggedOn) {
       logger.info('Finish user sign in');
+      delete user.password;
       return res.send({
         logging: {
           token: getToken(user),
