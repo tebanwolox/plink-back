@@ -43,7 +43,7 @@ exports.topCoins = (req, res, next) => {
     .then(coins => convertCoins(coins, currency))
     .then(convCoins => {
       const serialCoins = serializeCoins(convCoins);
-      const orderCoins = orderArrays(serialCoins, 'price', 'desc');
+      const orderCoins = orderArrays(serialCoins, 'price');
       const topCoins = orderCoins.slice(0, topNumber);
       return ord === 'asc' ? orderArrays(topCoins, 'price', ord) : topCoins;
     })
