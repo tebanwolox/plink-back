@@ -10,7 +10,7 @@ exports.getToken = user => jwt.sign({ user }, secret, { expiresIn: expirationTok
 exports.verifiedToken = token =>
   jwt.verify(token, secret, (err, decode) => {
     if (err || !decode.user.id) {
-      logger.error(err.message);
+      logger.error('Invalid token');
       throw errors.authError('Invalid token');
     }
     return decode;

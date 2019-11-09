@@ -9,8 +9,8 @@ exports.createCoinSchema = {
 };
 
 exports.topCoinsSchema = {
-  in: ['query'],
   ord: {
+    in: ['query'],
     isIn: {
       options: [['asc', 'desc']],
       errorMessage: 'Ord invalid'
@@ -20,16 +20,6 @@ exports.topCoinsSchema = {
         checkFalsy: true,
         nullable: false
       }
-    }
-  }
-};
-
-exports.listCoinsSchema = {
-  id: {
-    in: ['params'],
-    isEmpty: {
-      negated: true,
-      errorMessage: 'Invalid Id'
     }
   }
 };
