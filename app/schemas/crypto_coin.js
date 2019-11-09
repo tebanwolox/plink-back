@@ -7,13 +7,3 @@ exports.createCoinSchema = {
     }
   }
 };
-
-exports.listCoinsSchema = {
-  id: {
-    in: ['params'],
-    isEmpty: {
-      negated: true,
-      errorMessage: 'Invalid Id'
-    }
-  }
-};

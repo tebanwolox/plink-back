@@ -11,7 +11,7 @@ exports.getToken = ({ id, firstName, lastName, currency }) =>
 exports.verifiedToken = token =>
   jwt.verify(token, secret, (err, decode) => {
     if (err || !decode.id) {
-      logger.error(err.message);
+      logger.error('Invalid token');
       throw errors.authError('Invalid token');
     }
     return decode;

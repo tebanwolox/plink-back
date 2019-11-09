@@ -1,7 +1,7 @@
 const { validationResult, checkSchema } = require('express-validator');
 
 const { badRequest } = require('../errors');
-const { validateAuth, verifiedId } = require('./authentication');
+const { validateAuth } = require('./authentication');
 
 exports.checkValidationResult = (req, _, next) => {
   const { errors } = validationResult(req);
@@ -12,10 +12,3 @@ exports.checkValidationResult = (req, _, next) => {
 exports.validateSchema = schema => [checkSchema(schema), exports.checkValidationResult];
 
 exports.validateSchemaAuth = schema => [checkSchema(schema), exports.checkValidationResult, validateAuth];
-
-exports.validateSchemaId = schema => [
-  checkSchema(schema),
-  exports.checkValidationResult,
-  validateAuth,
-  verifiedId
-];
