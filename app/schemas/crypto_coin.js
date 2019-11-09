@@ -1,6 +1,6 @@
 exports.createCoinSchema = {
-  in: ['body'],
   currency: {
+    in: ['body'],
     isEmpty: {
       negated: true,
       errorMessage: 'Coin is invalid'

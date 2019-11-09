@@ -7,10 +7,10 @@ const logger = require('../logger');
 exports.createCoin = (req, res, next) => {
   logger.info('Start create coin');
   const { user } = req;
-  const currency = req.body.currency.toUpperCase();
+  const { currency } = req.body;
   return verifiedCrypto(currency)
     .then(response => {
-      if (response.success) return addCoin(currency, user.id);
+      if (response.success) return addCoin(currency.toUpperCase(), user.id);
       throw errors.apiError('This is not a cryptocoin');
     })
     .then(coin => {
