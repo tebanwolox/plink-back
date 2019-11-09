@@ -40,8 +40,8 @@ exports.signUpSchema = {
 };
 
 exports.signInSchema = {
-  in: ['body'],
   userName: {
+    in: ['body'],
     isEmpty: {
       negated: true,
       errorMessage: 'userName is invalid'
