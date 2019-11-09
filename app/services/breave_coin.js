@@ -15,7 +15,7 @@ exports.getApi = (uri, method) => {
     json: true
   };
   return request(options).catch(err => {
-    logger.error('Error trying to coin album API');
+    logger.error('Error trying to coin API');
     throw errors.apiError(err.message);
   });
 };
