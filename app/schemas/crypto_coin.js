@@ -10,7 +10,7 @@ exports.createCoinSchema = {
 
 exports.listCoinsSchema = {
   id: {
-    in: ['query'],
+    in: ['params'],
     isEmpty: {
       negated: true,
       errorMessage: 'Invalid Id'
