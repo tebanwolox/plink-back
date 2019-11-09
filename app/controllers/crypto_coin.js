@@ -22,6 +22,7 @@ exports.createCoin = (req, res, next) => {
 
 exports.listCoins = (req, res, next) => {
   logger.info('Start list coins');
+  console.log(req.params.id);
   const { user } = req;
   return getCoinsByUser(user.id)
     .then(coins => convertCoins(coins, user.currency))
