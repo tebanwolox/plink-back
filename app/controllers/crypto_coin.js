@@ -36,7 +36,7 @@ exports.listCoins = (req, res, next) => {
 };
 
 exports.topCoins = (req, res, next) => {
-  logger.info('Start list coins');
+  logger.info('Start top list coins');
   const { id, currency } = req.user;
   const { ord } = req.query;
   return getCoinsByUser(id)
@@ -48,7 +48,7 @@ exports.topCoins = (req, res, next) => {
       return ord === 'asc' ? orderArraysAsc(topCoins, 'price') : topCoins;
     })
     .then(coins => {
-      logger.info('Finish list coins');
+      logger.info('Finish top list coins');
       return res.send({ coins, currency });
     })
     .catch(next);
