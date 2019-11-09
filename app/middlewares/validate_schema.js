@@ -5,7 +5,7 @@ const { validateAuth } = require('./authentication');
 
 exports.checkValidationResult = (req, _, next) => {
   const { errors } = validationResult(req);
-  if (errors.length > 0) next(badRequest(errors.map(err => err.msg)));
+  if (errors.length > 0) return next(badRequest(errors.map(err => err.msg)));
   return next();
 };
 
