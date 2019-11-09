@@ -7,7 +7,8 @@ const statusCodes = {
   [errors.DATABASE_ERROR]: 503,
   [errors.DEFAULT_ERROR]: 500,
   [errors.BAD_REQUEST]: 400,
-  [errors.API_ERROR]: 503
+  [errors.API_ERROR]: 503,
+  [errors.AUTH_ERROR]: 401
 };
 
 exports.handle = (error, req, res, next) => {

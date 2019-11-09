@@ -1,6 +1,6 @@
 const request = require('request-promise');
 
-const { braveCoinEnpoint, braveHost, braveApiKey } = require('../../config/index').common.braveCoin;
+const { braveCoinEnpoint, braveHost, braveApiKey } = require('../../config').common.braveCoin;
 const errors = require('../errors');
 const logger = require('../logger');
 
@@ -15,7 +15,7 @@ exports.getApi = (uri, method) => {
     json: true
   };
   return request(options).catch(err => {
-    logger.error('Error trying to consume album API');
+    logger.error('Error trying to coin API');
     throw errors.apiError(err.message);
   });
 };

@@ -1,6 +1,6 @@
 exports.createCoinSchema = {
-  in: ['body'],
   currency: {
+    in: ['body'],
     isEmpty: {
       negated: true,
       errorMessage: 'Coin is invalid'
@@ -20,6 +20,16 @@ exports.topCoinsSchema = {
         checkFalsy: true,
         nullable: false
       }
+    }
+  }
+};
+
+exports.listCoinsSchema = {
+  id: {
+    in: ['params'],
+    isEmpty: {
+      negated: true,
+      errorMessage: 'Invalid Id'
     }
   }
 };
