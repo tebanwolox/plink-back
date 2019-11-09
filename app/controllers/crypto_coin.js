@@ -6,11 +6,11 @@ const logger = require('../logger');
 
 exports.createCoin = (req, res, next) => {
   logger.info('Start create coin');
-  const { user } = req;
+  const { id } = req.user;
   const { currency } = req.body;
   return verifiedCrypto(currency)
     .then(response => {
-      if (response.success) return addCoin(currency.toUpperCase(), user.id);
+      if (response.success) return addCoin(currency.toUpperCase(), id);
       throw errors.apiError('This is not a cryptocoin');
     })
     .then(coin => {
@@ -22,9 +22,9 @@ exports.createCoin = (req, res, next) => {
 
 exports.listCoins = (req, res, next) => {
   logger.info('Start list coins');
-  const { user } = req;
-  return getCoinsByUser(user.id)
-    .then(coins => convertCoins(coins, user.currency))
+  const { id, currency } = req.user;
+  return getCoinsByUser(id)
+    .then(coins => convertCoins(coins, currency))
     .then(coins => cryptoList(coins))
     .then(coins => {
       logger.info('Finish list coins');
