@@ -47,6 +47,11 @@ const config = {
     },
     bcrypt: {
       saltRounds: process.env.CRYPT_SALT_ROUNDS
+    },
+    braveCoin: {
+      braveCoinEnpoint: process.env.BREAVE_COIN_ENDPOINT,
+      braveHost: process.env.BREAVE_COIN_HOST,
+      braveApiKey: process.env.BREAVE_COIN_API_KEY
     }
   }
 };
