@@ -7,3 +7,19 @@ exports.createCoinSchema = {
     }
   }
 };
+
+exports.topCoinsSchema = {
+  ord: {
+    in: ['query'],
+    isIn: {
+      options: [['asc', 'desc']],
+      errorMessage: 'Ord invalid'
+    },
+    optional: {
+      options: {
+        checkFalsy: true,
+        nullable: false
+      }
+    }
+  }
+};
