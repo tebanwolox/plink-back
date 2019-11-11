@@ -13,7 +13,7 @@ exports.createCoin = (req, res, next) => {
   return verifiedCrypto(currency)
     .then(response => {
       if (response.success) return addCoin(currency.toUpperCase(), id);
-      throw errors.apiError('This is not a cryptocoin');
+      throw errors.badRequest('This is not a cryptocoin');
     })
     .then(coin => {
       logger.info('Finish create coin');
