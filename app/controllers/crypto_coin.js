@@ -38,13 +38,13 @@ exports.listCoins = (req, res, next) => {
 exports.topCoins = (req, res, next) => {
   logger.info('Start top list coins');
   const { id, currency } = req.user;
-  const { ord } = req.query;
+  const { ord, limit } = req.query;
   return getCoinsByUser(id)
     .then(coins => convertCoins(coins, currency))
     .then(convCoins => {
       const serialCoins = serializeCoins(convCoins);
       const orderCoins = orderArrays(serialCoins, 'price');
-      const topCoins = orderCoins.slice(0, topNumber);
+      const topCoins = orderCoins.slice(0, limit ? limit : topNumber);
       return ord === 'asc' ? orderArrays(topCoins, 'price', ord) : topCoins;
     })
     .then(coins => {

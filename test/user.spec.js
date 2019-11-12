@@ -2,6 +2,8 @@ const supertest = require('supertest');
 
 const app = require('../app');
 const { testUser, testLogging } = require('./mock/user');
+const { User } = require('../app/models');
+const { verifiedToken } = require('../app/helpers/jwt');
 
 const request = supertest(app);
 
@@ -12,7 +14,15 @@ describe('Users controllers', () => {
         .post('/users')
         .send(testUser)
         .then(response => {
+          const { currency, firstName, lastName, userName } = testUser;
           expect(response.statusCode).toBe(201);
+          return User.findOne({
+            where: { userName: testUser.userName },
+            attributes: ['currency', 'firstName', 'lastName', 'userName'],
+            raw: true
+          }).then(res => {
+            expect(res).toStrictEqual({ currency, firstName, lastName, userName });
+          });
         }));
 
     it('Should fail because the userName already exists', () =>
@@ -24,7 +34,10 @@ describe('Users controllers', () => {
             .post('/users')
             .send(testUser)
             .then(response => {
+              const { internal_code, message } = response.body;
               expect(response.statusCode).toBe(503);
+              expect(message).toBe('Database error');
+              expect(internal_code).toBe('database_error');
             })
         ));
 
@@ -33,7 +46,10 @@ describe('Users controllers', () => {
         .post('/users')
         .send({ ...testUser, password: '1234' })
         .then(response => {
+          const { internal_code, message } = response.body;
           expect(response.statusCode).toBe(400);
+          expect(message[0]).toBe('The passwortd must have at least 8 characters, numbers and letters');
+          expect(internal_code).toBe('bad_request');
         }));
   });
 
@@ -47,7 +63,9 @@ describe('Users controllers', () => {
             .post('/users/sessions')
             .send(testLogging)
             .then(response => {
+              const { token } = response.body.logging;
               expect(response.statusCode).toBe(200);
+              expect(verifiedToken(token)).toBeTruthy();
             })
         ));
 
@@ -60,7 +78,10 @@ describe('Users controllers', () => {
             .post('/users/sessions')
             .send({ ...testLogging, password: '123' })
             .then(response => {
+              const { internal_code, message } = response.body;
               expect(response.statusCode).toBe(401);
+              expect(message).toBe('Invalid password');
+              expect(internal_code).toBe('auth_error');
             })
         ));
 
@@ -69,7 +90,10 @@ describe('Users controllers', () => {
         .post('/users/sessions')
         .send(testLogging)
         .then(response => {
+          const { internal_code, message } = response.body;
           expect(response.statusCode).toBe(401);
+          expect(message).toBe('The user don`t exists');
+          expect(internal_code).toBe('auth_error');
           done();
         }));
   });

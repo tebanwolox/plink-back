@@ -7,6 +7,7 @@ const { testCoin, testNotCryptoCoin, testCoins } = require('./mock/coin');
 const { getToken } = require('../app/helpers/jwt');
 const { testTickerResponse, testTickerNoCrypto, testConvertResponse } = require('./mock/coin');
 const { braveCoinEnpoint } = require('../config').common.braveCoin;
+const { CryptoCoin } = require('../app/models');
 
 const request = supertest(app);
 
@@ -36,6 +37,13 @@ describe('Coins controllers', () => {
         .send(testCoin)
         .then(response => {
           expect(response.statusCode).toBe(201);
+          return CryptoCoin.findOne({
+            where: { currency: testCoin.currency, userId: createdUser.id },
+            raw: true
+          }).then(res => {
+            expect(res.id).toBe(createdUser.id);
+            expect(res.currency).toBe(testCoin.currency);
+          });
         });
     });
 
@@ -48,7 +56,10 @@ describe('Coins controllers', () => {
         .set({ Authorization: getToken({ ...testUser, id: createdUser.id }) })
         .send(testNotCryptoCoin)
         .then(response => {
+          const { internal_code, message } = response.body;
           expect(response.statusCode).toBe(400);
+          expect(message).toBe('This is not a cryptocoin');
+          expect(internal_code).toBe('bad_request');
         });
     });
 
@@ -57,6 +68,9 @@ describe('Coins controllers', () => {
         .post('/coins')
         .set({ Authorization: getToken({ ...testUser, id: createdUser.id }) })
         .then(response => {
+          const { internal_code, message } = response.body;
+          expect(message[0]).toBe('Coin is invalid');
+          expect(internal_code).toBe('bad_request');
           expect(response.statusCode).toBe(400);
         }));
   });
@@ -82,6 +96,7 @@ describe('Coins controllers', () => {
           .set({ Authorization: getToken({ ...testUser, id: createdUser.id }) })
           .then(response => {
             expect(response.statusCode).toBe(200);
+            expect(response.body.currency).toBe(createdUser.currency);
           })
       );
     });
@@ -91,7 +106,10 @@ describe('Coins controllers', () => {
         .get('/coins/list')
         .set({ Authorization: getToken({ ...testUser, id: createdUser.id }) })
         .then(response => {
+          const { currency, coins } = response.body;
           expect(response.statusCode).toBe(200);
+          expect(currency).toBe(createdUser.currency);
+          expect(coins.length).toBe(0);
         }));
   });
 
@@ -116,6 +134,8 @@ describe('Coins controllers', () => {
           .set({ Authorization: getToken({ ...testUser, id: createdUser.id }) })
           .then(response => {
             expect(response.statusCode).toBe(200);
+            expect(response.body.currency).toBe(createdUser.currency);
+            expect(response.statusCode).toBe(200);
           })
       );
     });
@@ -125,7 +145,10 @@ describe('Coins controllers', () => {
         .get('/coins/topList')
         .set({ Authorization: getToken({ ...testUser, id: createdUser.id }) })
         .then(response => {
+          const { currency, coins } = response.body;
           expect(response.statusCode).toBe(200);
+          expect(currency).toBe(createdUser.currency);
+          expect(coins.length).toBe(0);
         }));
   });
 });

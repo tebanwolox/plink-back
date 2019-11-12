@@ -1,5 +1,5 @@
-const { validateCoin } = require('../helpers/validations');
 const { PASS_REG_EX } = require('../constants');
+const { CURRENCY } = require('../constants');
 
 exports.signUpSchema = {
   firstName: {
@@ -27,13 +27,13 @@ exports.signUpSchema = {
     in: ['body'],
     matches: {
       options: PASS_REG_EX,
-      errorMessage: 'The passwortd must have at least 8 chracthers, numbers and letters'
+      errorMessage: 'The passwortd must have at least 8 characters, numbers and letters'
     }
   },
   currency: {
     in: ['body'],
     custom: {
-      options: coin => validateCoin(coin),
+      options: coin => CURRENCY.includes(coin),
       errorMessage: 'The Coin is invalid'
     }
   }
@@ -51,7 +51,7 @@ exports.signInSchema = {
     in: ['body'],
     isEmpty: {
       negated: true,
-      errorMessage: 'userName is invalid'
+      errorMessage: 'Password is invalid'
     }
   }
 };
