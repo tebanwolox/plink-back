@@ -5,7 +5,7 @@ const errors = require('../errors');
 exports.createUser = user =>
   User.create(user).catch(err => {
     logger.error(err.message);
-    return Promise.reject(errors.databaseError('Error with data base'));
+    return Promise.reject(errors.databaseError('Database error'));
   });
 
 exports.getUser = log =>
@@ -15,5 +15,5 @@ exports.getUser = log =>
     raw: true
   }).catch(err => {
     logger.error(err.message);
-    return Promise.reject(errors.databaseError('Error with data base'));
+    return Promise.reject(errors.databaseError('Database error'));
   });

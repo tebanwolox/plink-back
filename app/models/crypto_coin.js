@@ -16,6 +16,6 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'crypto_coins'
     }
   );
-  CryptoCoin.associate = models => CryptoCoin.hasMany(models.User, { foreignKey: 'userId' });
+  CryptoCoin.associate = models => CryptoCoin.belongsTo(models.User, { foreignKey: 'userId' });
   return CryptoCoin;
 };

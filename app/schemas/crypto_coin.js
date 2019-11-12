@@ -21,5 +21,14 @@ exports.topCoinsSchema = {
         nullable: false
       }
     }
+  },
+  limit: {
+    in: ['query'],
+    optional: {
+      options: {
+        checkFalsy: true,
+        nullable: false
+      }
+    }
   }
 };

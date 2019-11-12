@@ -5,7 +5,7 @@ const errors = require('../errors');
 exports.addCoin = (currency, userId) =>
   CryptoCoin.create({ currency, userId }).catch(err => {
     logger.error(err.message);
-    return Promise.reject(errors.databaseError('Error with data base'));
+    return Promise.reject(errors.databaseError('Database error'));
   });
 
 exports.getCoinsByUser = userId =>
@@ -15,5 +15,5 @@ exports.getCoinsByUser = userId =>
     raw: true
   }).catch(err => {
     logger.error(err.message);
-    return Promise.reject(errors.databaseError('Error with data base'));
+    return Promise.reject(errors.databaseError('Database error'));
   });
