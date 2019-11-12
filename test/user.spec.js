@@ -64,12 +64,13 @@ describe('Users controllers', () => {
             })
         ));
 
-    it('Should be a bad logging because the user don´t exists', () =>
+    it('Should be a bad logging because the user don´t exists', done =>
       request
         .post('/users/sessions')
         .send(testLogging)
         .then(response => {
           expect(response.statusCode).toBe(401);
+          done();
         }));
   });
 });
