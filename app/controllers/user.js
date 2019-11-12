@@ -25,6 +25,7 @@ exports.logging = async (req, res, next) => {
     logger.info('Start user sign in');
     const credentials = req.body;
     const user = await getUser(credentials);
+    if (!user) return next(errors.authError('The user don`t exists'));
     const isLoggedOn = await comparePassword(credentials.password, user.password);
     if (isLoggedOn) {
       logger.info('Finish user sign in');
@@ -36,7 +37,7 @@ exports.logging = async (req, res, next) => {
         }
       });
     }
-    return next(errors.badRequest('Invalid user name or password'));
+    return next(errors.authError('Invalid password'));
   } catch (err) {
     return next(err);
   }
